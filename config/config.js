@@ -1,18 +1,24 @@
+// solves `SyntaxError: Unexpected token import`
+require("babel-register")({
+    presets: [ 'es2015' ]
+});
 
 exports.config = {
     directConnect: true,
 
     // Framework to use. Jasmine is recommended.
     framework: 'jasmine2',
+    
     allScriptsTimeout: 40000,
 
-    specs: ['./specs/*.js'],
+    specs: ['../specs/*.js'],
 
     //To use async await 
     SELENIUM_PROMISE_MANAGER: false,
 
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
+        browserName:'chrome',
         'shardTestFiles': true,
         'maxInstances': 1,
     },

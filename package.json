@@ -6,7 +6,11 @@
   "author": {
     "name": "Sachin Kamble"
   },
+  "engines": {
+    "node": "8.12.0"
+  },
   "scripts": {
+    "update": "node_modules/.bin/webdriver-manager update",
     "test": "protractor config/config.js"
   },
   "keywords": [
@@ -16,5 +20,8 @@
     "npm": "^6.14.6",
     "protractor": "^7.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0"
+  }
 }
