@@ -1,3 +1,13 @@
 {
-	"url": "http://www.vacationsdirect.com/"
+    "url": "http://www.vacationsdirect.com/",
+    "timeout": {
+        "xs": 500,
+        "s": 1000,
+        "m": 2000,
+        "l": 5000,
+        "xl": 9000,
+        "xxl": 15000
+    },
+    "checkInDate": "1",
+    "checkOutDate": "3"
 }
