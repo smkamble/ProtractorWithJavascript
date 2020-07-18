@@ -13,21 +13,21 @@ export default class BasePage {
      * @returns {promise}
      * @requires a page to include `pageLoaded` method
      */
-    async loaded(url) {
+    async loaded() {
         return browser.wait(async () => {
             return await this.pageLoaded();
-        }, testData.timeout.xl, 'timeout: waiting for page to load. The url is: ' + url);
+        }, testData.timeout.xl, 'Timeout: waiting for page to load');
     }
 
     /**
      * launch a page via it's `url`
      * and verify/wait via loaded()
      */
-    async OpenBrowser(url) {
-        await browser.waitForAngularEnabled(false);
-        await browser.get(url);
-        await browser.manage().window().maximize();
-        return await this.loaded(url);
+    OpenBrowser(url) {
+        browser.ignoreSynchronization = true; // for non-angular websites
+        browser.get(url);
+        browser.manage().window().maximize();
+        return this.loaded();
     }
 
     /**
@@ -58,6 +58,10 @@ export default class BasePage {
         return protractor.ExpectedConditions.textToBePresentInElement(locator, text);
     }
 
+    notHasText(locator, text) {
+        return protractor.ExpectedConditions.not(protractor.ExpectedConditions.textToBePresentInElement(locator, text));
+    }
+
     and(arrayOfFunctions) {
         return protractor.ExpectedConditions.and(arrayOfFunctions);
     }
@@ -67,7 +71,7 @@ export default class BasePage {
     }
 
     /**
-    * Next month name
+    * Get Next month name
     * @returns month name in short format like Aug
     */
     monthName() {
@@ -92,13 +96,56 @@ export default class BasePage {
     * Find date from date picker and click on it
     * * @requires a date list locator and date to be select
     */
-    async dateSelect(datePicker, date) {
+    async dateSelect(datePicker, day) {
         await browser.wait(this.isPresent(datePicker), testData.timeout.xl);
-        var month = this.monthName(date);
+        var monthName = this.monthName(day);
         await datePicker.filter(async function (elem) {
             return await elem.getAttribute("title").then(async function (text) {
-                return await text.includes(month + " " + date);
+                return await text.includes(monthName + " " + day);
             });
         }).first().click();
     }
+
+    /**
+    * Get next month and date in mm/dd/yy format
+    * @returns mm/dd/yy format
+    */
+    formatDate(day) {
+        //get the year and pull the last two digits of the year
+        var year = new Date().getFullYear().toString().substr(-2);
+
+        //increment month by 1 since it is 0 indexed
+        //converts month to a string
+        var month = (new Date().getMonth() + 2).toString();
+
+        //if month is 1-9 pad right with a 0 for two digits
+        month = month.length > 1 ? month : '0' + month
+
+        //if day is between 1-9 pad right with a 0 for two digits
+        day = day.toString().length > 1 ? day : '0' + day;
+
+        //return the string "MM/dd/yy"
+        return month + "/" + day + "/" + year;
+    }
+
+    /**
+    * Select value form normal dropdown having select tagname
+    * @requires dropdown loctor and value to be select
+    */
+    selectDropdownValue(selectLocator, value) {
+        selectLocator.element(by.cssContainingText('option', value)).click();
+        browser.actions().sendKeys(protractor.Key.TAB).perform();
+    }
+
+    /**
+    * Get value from locator
+    * @return text value locator
+    * @requires locator to read value
+    */
+    async readText(locator) {
+        await locator.getText().then((text) => {
+            return text;
+        })
+    }
+
 }
