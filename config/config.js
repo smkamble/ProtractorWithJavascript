@@ -1,26 +1,35 @@
 // solves `SyntaxError: Unexpected token import`
 require("babel-register")({
-    presets: [ 'es2015' ]
+    presets: ['es2015']
 });
 
 exports.config = {
     directConnect: true,
 
     // Framework to use. Jasmine is recommended.
-    framework: 'jasmine2',
-    
+    framework: 'jasmine',
+
     allScriptsTimeout: 40000,
 
-    specs: ['../specs/*.js'],
+    specs: ['../specs/*Spec.js'],
 
     //To use async await 
     SELENIUM_PROMISE_MANAGER: false,
 
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
-        browserName:'chrome',
+        browserName: 'chrome',
         'shardTestFiles': true,
         'maxInstances': 1,
+        chromeOptions: {
+            args: [
+                // disable chrome's wakiness
+                '--disable-infobars',
+                '--disable-extensions',
+                'verbose',
+                'log-path=/tmp/chromedriver.log'
+            ]
+        }
     },
 
 
@@ -41,7 +50,7 @@ exports.config = {
     },
 
     beforeAll: function () {
-
+        browser.manage().timeouts().implicitlyWait(30000);
     },
 
     afterAll: function () {

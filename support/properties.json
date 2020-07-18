@@ -5,9 +5,13 @@
         "s": 1000,
         "m": 2000,
         "l": 5000,
-        "xl": 9000,
+        "xl": 10000,
         "xxl": 15000
     },
-    "checkInDate": "1",
-    "checkOutDate": "3"
+    "destinationCity": "New York City",
+    "checkInDay": "1",
+    "checkOutDay": "3",
+    "adults": "4",
+    "starRating": "5",
+    "hotelAddedLabel": "We've added your selection to your itinerary!"
 }
