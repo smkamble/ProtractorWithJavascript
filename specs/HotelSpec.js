@@ -2,7 +2,6 @@ import basePage from '../pages/basePage';
 import homePage from '../pages/homePage';
 import hotelResultsPage from '../pages/hotelResultsPage';
 
-import { browser, ExpectedConditions } from 'protractor';
 
 const testData = require("../support/properties.json");
 
@@ -31,7 +30,7 @@ describe("Hotel Search Scenario", () => {
         await homePage.setDestination(testData.destinationCity);
         await homePage.selectCheckInDate(testData.checkInDay, testData.checkOutDay);
         await homePage.clickSearchHotel();
-        
+
         await hotelResultsPage.selectStarRating(testData.starRating);
 
         expect(await hotelResultsPage.resultPaginationCount()).toContain(await hotelResultsPage.getStarRatingCount(testData.starRating) + " Hotels", "Star Count rating is not present at Result pagination with hotel count label");
